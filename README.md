@@ -1,2 +1,4 @@
-# pov_recorder
-Provides GUI and automation tools for recording CS:GO POV demos via HLAE
+# Work in progress
+- Browser GUI
+- Automated recording via HLAE (and .vdm)
+- Save, import and export render settings (i.e. resolution, recording fps, output fps)
