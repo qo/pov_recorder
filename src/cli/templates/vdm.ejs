@@ -1,0 +1,13 @@
+demoactions
+{
+<% Object.entries(vdm_entries).forEach(([idx, value]) => { -%>
+	"<%- Number(idx)+1 %>"
+	{
+		factory "PlayCommands"
+		name "<%- Number(idx)+1 %>"
+	<% Object.entries(value).forEach(([key, value]) => { -%>
+	<%- key %> "<%- value %>"
+	<% }) -%>
+}
+<% }) -%>
+}

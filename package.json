@@ -1,0 +1,30 @@
+{
+  "name": "pov_recorder",
+  "version": "1.0.0",
+  "description": "- Browser GUI\r - Automated recording via HLAE (and .vdm)\r - Save, import and export render settings (i.e. resolution, recording fps, output fps)",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "dev": "npm run build && node dist/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/qo/pov_recorder.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/qo/pov_recorder/issues"
+  },
+  "homepage": "https://github.com/qo/pov_recorder#readme",
+  "devDependencies": {
+    "@types/node": "^18.13.0",
+    "typescript": "^4.9.5"
+  },
+  "dependencies": {
+    "demofile": "^2.10.0",
+    "ejs": "^3.1.8",
+    "prompts": "^2.4.2"
+  }
+}
