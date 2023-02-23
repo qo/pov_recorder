@@ -1,4 +1,7 @@
 export default interface Player {
     name: string,
-    xuid: BigInt
+    xuid: BigInt,
+    low: number,
+    high: number,
+    uid: number
 }

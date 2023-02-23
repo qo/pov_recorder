@@ -1,24 +1,19 @@
 import prompts from 'prompts';
 import record from "./record";
 import * as path from "path";
-import {readFile} from "fs/promises";
+import {existsSync} from "fs";
 import manage_configs from "./manage_configs";
 
 (async function () {
 
-    let paths_are_configured = true;
-    try {
-        const path_cfg_path = path.join(__dirname, "..", "cfg", "paths", "paths.json");
-        const path_cfg_data = await readFile(path_cfg_path);
-        const path_cfg = JSON.parse(path_cfg_data.toString());
-    }
-    catch {
+    const path_cfg_path = path.join(__dirname, "..", "cfg", "paths", "paths.json");
+    const paths_are_configured = existsSync(path_cfg_path);
+
+    if (!paths_are_configured)
         console.log(
             `Paths are not configured yet.
             Record will be unavailable until paths are configured.`
         )
-        paths_are_configured = false;
-    }
 
     const action_selection = await prompts({
         type: 'select',

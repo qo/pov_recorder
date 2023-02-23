@@ -21,7 +21,8 @@ export default function get_players(demo_path: string) {
                         low: e.userData.xuid.low}
                     ),
                     low: e.userData.xuid.low,
-                    high: e.userData.xuid.high
+                    high: e.userData.xuid.high,
+                    uid: e.userData.userId
                 };
                 if (players.every(player => player.xuid !== currentPlayer.xuid))
                     players.push(currentPlayer);
