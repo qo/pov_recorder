@@ -8,7 +8,7 @@ Install [node](https://nodejs.org/en/download/)
 
 Clone repo
 
-Run `npm run dev`
+Run `npm install` and `npm run dev`
 
 # How to use
 
