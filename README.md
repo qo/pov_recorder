@@ -16,6 +16,14 @@ Run `npm install` and `npm run dev`
 
 # Kudos
 
-[f0e](https://github.com/f0e) (tekno) for [HLAE Configs](https://github.com/f0e/hlae-configs)
+[advancedfx](https://github.com/orgs/advancedfx/people) for [HLAE](https://github.com/advancedfx/advancedfx)
 
-[dtugend](https://github.com/dtugend) for answering questions on HLAE and nSkinz
+[advancedfx](https://github.com/orgs/advancedfx/people) and [namazso](https://github.com/namazso) for [nSkinz](https://github.com/advancedfx/nSkinz)
+
+[dtugend](https://github.com/dtugend) for answering questions on [HLAE](https://github.com/advancedfx/advancedfx) and [nSkinz](https://github.com/advancedfx/nSkinz)
+
+[saul](https://github.com/saul) for [demo parsing tool](https://github.com/saul/demofile)
+
+[f0e](https://github.com/f0e) (tekno) for [HLAE configs](https://github.com/f0e/hlae-configs)
+
+[HugoJF](https://github.com/HugoJF) for [CS:GO demo recorder](https://github.com/HugoJF/csgo-demo-recorder)
