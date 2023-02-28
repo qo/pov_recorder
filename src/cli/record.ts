@@ -1,4 +1,5 @@
 import {readdir, readFile, writeFile} from "fs/promises";
+import { watch } from "fs";
 import * as path from "path";
 import prompts from 'prompts';
 import get_players from "./get_players";
@@ -99,6 +100,6 @@ export default async function record() {
 
     await create_vdm(demo_path, start_tick, end_tick, recording_cfg, selected_player.xuid, selected_player.uid);
 
-    launch_hlae(demo_path, entity_id, recording_cfg, path_cfg);
+    await launch_hlae(demo_path, entity_id, recording_cfg, path_cfg);
 
 }

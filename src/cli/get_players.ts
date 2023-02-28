@@ -16,6 +16,7 @@ export default function get_players(demo_path: string) {
             if (e.table.name === "userinfo" && e.userData != null && !e.userData.fakePlayer && !e.userData.isHltv) {
                 const currentPlayer = {
                     name: e.userData.name,
+                    guid: e.userData.guid,
                     xuid: convert_high_low_to_full({
                         high: e.userData.xuid.high,
                         low: e.userData.xuid.low}

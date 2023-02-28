@@ -18,14 +18,22 @@ function get_hlae_launch_options(demo_path: string, entity_id: number, recording
 }
 
 export default function launch_hlae(demo_path: string, entity_id: number, recording_cfg: recording_cfg, path_cfg: path_cfg) {
-    console.log("Launching HLAE...");
-    execFile(
-        path_cfg.hlae_exe,
-        get_hlae_launch_options(
-            demo_path,
-            entity_id,
-            recording_cfg,
-            path_cfg)
-    );
-    console.log("HLAE launched. Wait until the game is closed and see the result in recordings folder.");
+    return new Promise((resolve, reject) => {
+        execFile(
+            path_cfg.hlae_exe,
+            get_hlae_launch_options(
+                demo_path,
+                entity_id,
+                recording_cfg,
+                path_cfg),
+            {},
+            (error, stdout, stderr) => {
+                if (error) {
+                    reject(error);
+                } else {
+                    resolve(stdout);
+                }
+            }
+        );
+    });
 }
