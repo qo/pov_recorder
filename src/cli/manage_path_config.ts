@@ -1,121 +1,89 @@
 import prompts from 'prompts';
 import path from "path";
 import {readFile, writeFile} from "fs/promises";
+import get_path_cfg from "./get_path_cfg";
+import select from "./select";
+import text_input from "./text_input";
 
 async function create_path_config() {
 
-    const path_inputs = [
-        {
-            type: 'text',
-            name: 'csgo_exe',
-            message: 'Provide Full Path to csgo.exe'
-        },
-        {
-            type: 'text',
-            name: 'hlae_exe',
-            message: 'Provide Full Path to hlae.exe'
-        },
-        {
-            type: 'text',
-            name: 'nskinz_dll',
-            message: 'Provide Full Path to nskinz.dll (leave empty if you don\'t use it)'
-        }
-    ]
-
-    const new_path_cfg = await prompts(path_inputs);
+    let new_path_cfg: {
+        csgo_exe?: string,
+        hlae_exe?: string,
+        nskinz_dll?: string
+    } = {};
+    new_path_cfg.csgo_exe =
+        await text_input('Provide Full Path to csgo.exe');
+    new_path_cfg.hlae_exe =
+        await text_input('Provide Full Path to hlae.exe');
+    new_path_cfg.nskinz_dll =
+        await text_input('Provide Full Path to nskinz.dll (leave empty if you don\'t use it)');
 
     const path_cfg_path = path.join(__dirname, "..", "cfg", "paths", "paths.json");
     await writeFile(path_cfg_path, JSON.stringify(new_path_cfg));
+
+}
+
+async function save_or_edit_path(props: { name_of_file: string, current_path_to_file: string }) {
+
+    const choices = [
+        { title: "Leave unchanged", value: "save" },
+        { title: "Edit", value: "edit" }
+    ];
+
+    const path_action =
+        await select(
+            `Your current ${props.name_of_file} path is ${props.current_path_to_file}`,
+            choices
+        )
+
+    if (path_action === "edit")
+        return await text_input('Provide Full Path to csgo.exe');
 
 }
 
 async function edit_path_config() {
 
-    const path_cfg_path = path.join(__dirname, "..", "cfg", "paths", "paths.json");
-    const path_cfg_data = await readFile(path_cfg_path);
-    const path_cfg = JSON.parse(path_cfg_data.toString());
+    const path_cfg = await get_path_cfg();
     const new_path_cfg = path_cfg;
 
-    // todo: make a function instead
-
-    const csgo_path_action_selection = await prompts({
-        type: 'select',
-        name: 'selected_action',
-        message: `Your current csgo.exe path is ${path_cfg.csgo_exe}`,
-        choices: [
-            { title: "Leave unchanged", value: "save" },
-            { title: "Edit", value: "edit" }
-        ]
+    new_path_cfg.csgo_exe = save_or_edit_path({
+        name_of_file: "csgo.exe",
+        current_path_to_file: path_cfg.csgo_exe
     });
 
-    if (csgo_path_action_selection.selected_action === "edit") {
-        const csgo_new_path_selection = await prompts({
-            type: 'text',
-            name: 'selected_path',
-            message: 'Provide Full Path to csgo.exe'
-        });
-        new_path_cfg.csgo_exe = csgo_new_path_selection.selected_path;
-    }
-
-    const hlae_path_action_selection = await prompts({
-        type: 'select',
-        name: 'selected_action',
-        message: `Your current hlae.exe path is ${path_cfg.hlae_exe}`,
-        choices: [
-            { title: "Leave unchanged", value: "save" },
-            { title: "Edit", value: "edit" }
-        ]
+    new_path_cfg.hlae_exe = save_or_edit_path({
+        name_of_file: "hlae.exe",
+        current_path_to_file: path_cfg.hlae_exe
     });
 
-    if (hlae_path_action_selection.selected_action === "edit") {
-        const hlae_new_path_selection = await prompts({
-            type: 'text',
-            name: 'selected_path',
-            message: 'Provide Full Path to hlae.exe'
-        });
-        new_path_cfg.hlae_exe = hlae_new_path_selection.selected_path;
-    }
-
-    const nskinz_path_action_selection = await prompts({
-        type: 'select',
-        name: 'selected_action',
-        message: `Your current csgo.exe path is ${path_cfg.nskinz_dll}`,
-        choices: [
-            { title: "Leave unchanged", value: "save" },
-            { title: "Edit", value: "edit" }
-        ]
+    new_path_cfg.nskinz_dll = save_or_edit_path({
+        name_of_file: "nSkinz.dll",
+        current_path_to_file: path_cfg.nskinz_dll
     });
 
-    if (nskinz_path_action_selection.selected_action === "edit") {
-        const nskinz_new_path_selection = await prompts({
-            type: 'text',
-            name: 'selected_path',
-            message: 'Provide Full Path to nskinz.dll'
-        });
-        new_path_cfg.nskinz_dll = nskinz_new_path_selection.selected_path;
-    }
+    const path_cfg_path = path.join(__dirname, "..", "cfg", "paths");
 
     await writeFile(path_cfg_path, JSON.stringify(new_path_cfg));
 }
 
-export default async function manage_path_config(paths_are_configured: boolean) {
+export default async function manage_path_config(props: { paths_are_configured: boolean }) {
 
     // Path config can only be created or edited
 
-    const action_selection = await prompts({
-        type: 'select',
-        name: 'selected_action',
-        message: 'What do you want to do with Path Config?',
-        choices: [
-            { title: "Create Path Config", value: "create", disabled: paths_are_configured },
-            { title: "Edit Path Config", value: "edit", disabled: !paths_are_configured }
-        ]
-    });
+    const action =
+        await select(
+            'What do you want to do with Path Config?',
+            [
+                { title: "Create Path Config", value: "create" },
+                { title: "Edit Path Config", value: "edit", disabled: !props.paths_are_configured }
+            ]
+        )
 
-    if (action_selection.selected_action === "create")
+    if (action === "create")
         await create_path_config();
 
-    else if (action_selection.selected_action === "edit")
+    else if (action === "edit")
         await edit_path_config();
 
     else

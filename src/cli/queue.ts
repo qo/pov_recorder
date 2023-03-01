@@ -6,6 +6,7 @@ import read_json from "./read_json";
 import convert_steam_id_to_xuid from "./utils/convert_steam_id_to_xuid";
 import text_input from "./text_input";
 import prompt_for_demo_props from "./prompt_for_demo_props";
+import record_demo from "./record_demo";
 
 // Choose recording config to be used by default
 // Choose steamid to be used by default
@@ -28,7 +29,7 @@ export default async function queue() {
 
     let default_recording_cfg;
     if (use_default_recording_cfg) {
-        const default_recording_cfg_name = await prompt_for_recording_cfg(recording_cfgs_names);
+        const default_recording_cfg_name = await prompt_for_default_recording_cfg(recording_cfgs_names);
         default_recording_cfg = await read_json(recording_cfgs_path, default_recording_cfg_name);
     }
 
@@ -79,12 +80,15 @@ async function add_demos_to_queue(props: { default_recording_cfg?: string, defau
     }
 
     demos_props.forEach(
-        async (demo_props) => {
-            // await create_nskinz_cfg_if_doesnt_exist(demo_props.recording_cfg, path_cfg);
-            // await create_vdm(demo_path, start_tick, end_tick, recording_cfg, selected_player.xuid, selected_player.uid);
-            // await launch_hlae(demo_path, entity_id, recording_cfg, path_cfg);
-        }
-    )
+        async (demo_props) =>
+            await record_demo(
+                demo_props.recording_cfg,
+                demo_props.demo_path,
+                demo_props.start_tick,
+                demo_props.end_tick,
+                demo_props.pov_player
+            )
+    );
 
 }
 
@@ -132,7 +136,7 @@ async function prompt_for_default_steam_id() {
     return { default_steam_id, default_steam_id_type };
 }
 
-async function prompt_for_recording_cfg(recording_cfg_names: string[]) {
+async function prompt_for_default_recording_cfg(recording_cfg_names: string[]) {
     return await select(
         "Select Recording Config to be used by default",
         recording_cfg_names

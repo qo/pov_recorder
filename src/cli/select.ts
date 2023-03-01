@@ -1,6 +1,12 @@
 import prompts from 'prompts';
 
-export default async function select<type>(message: string, choices: type[] | { title: string, value: type }[], initial?: type | { title: string, value: type }): Promise<type> {
+interface choice_of_type<type> {
+    title: string,
+    value: type,
+    disabled?: boolean
+}
+
+export default async function select<type>(message: string, choices: choice_of_type<type>[] | type[], initial?: type): Promise<type> {
 
     const choices_are_normalized = (
         typeof choices[0] === "object" &&

@@ -3,6 +3,7 @@ import record from "./record";
 import * as path from "path";
 import {existsSync} from "fs";
 import manage_configs from "./manage_configs";
+import select from "./select";
 
 (async function () {
 
@@ -15,20 +16,19 @@ import manage_configs from "./manage_configs";
             Record will be unavailable until paths are configured.`
         )
 
-    const action_selection = await prompts({
-        type: 'select',
-        name: 'selected_action',
-        message: 'What do you want to do?',
-        choices: [
-            { title: "Manage configs", value: "manage-configs" },
-            { title: "Record", value: "record", disabled: !paths_are_configured }
-        ]
-    });
+    const action =
+        await select(
+            'What do you want to do?',
+            [
+                { title: "Manage configs", value: "manage-configs" },
+                { title: "Record", value: "record", disabled: !paths_are_configured }
+            ]
+        );
 
-    if (action_selection.selected_action === "manage-configs")
+    if (action === "manage-configs")
         await manage_configs(paths_are_configured);
 
-    else if (action_selection.selected_action === "record")
+    else if (action === "record")
         await record();
 
     else

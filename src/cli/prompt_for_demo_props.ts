@@ -12,7 +12,7 @@ interface props {
     default_steam_xuid?: string,
 }
 
-export default async function prompt_for_demo_props(props: props) {
+export default async function prompt_for_demo_props(props?: props) {
 
     const demos_path = path.join(__dirname, "..", "demos");
     const demos_path_files = await readdir(demos_path);
